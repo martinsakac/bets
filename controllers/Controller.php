@@ -8,7 +8,7 @@ abstract class Controller {
 
 	protected $pageHeader = array('pageTitle' => '', 'keyWords' => '', 'description' => '');
 
-    public function vypisview() {
+    public function renderView() {
         if ($this->view) {
             extract($this->data);
             require("views/" . $this->view . ".phtml");
@@ -23,6 +23,6 @@ abstract class Controller {
 	}
 
 	// Hlavní metoda controlleru
-    abstract function process($parametry);
+    abstract function process($params);
 
 }

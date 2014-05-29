@@ -4,7 +4,6 @@ class RouterController extends Controller {
 	
     protected $controller;
 	
-	// Metoda převede pomlčkovou variantu controlleru na název třídy
 	private function dashesToCamelCase($text) {
 		$sentence = str_replace('-', ' ', $text);
 		$sentence = ucwords($sentence);
@@ -12,32 +11,43 @@ class RouterController extends Controller {
 		return $sentence;
 	}
 	
-	// Naparsuje URL adresu podle lomítek a vrátí pole parametrů
 	private function parseURL($url) {
-		// Naparsuje jednotlivé části URL adresy do asociativního pole
         $parsedURL = parse_url($url);
-		// Odstranenie pociatocneho lomitka
 		$parsedURL["path"] = ltrim($parsedURL["path"], "/");
-		// Odstranění bílých znaků kolem adresy
+        $parsedURL["path"] = rtrim($parsedURL["path"], "/");
 		$parsedURL["path"] = trim($parsedURL["path"]);
-		// Rozbití řetězce podle lomítek
-		$rozdelenaCesta = explode("/", $parsedURL["path"]);
-        return $rozdelenaCesta;
+		$splitPath = explode("/", $parsedURL["path"]);
+        return $splitPath;
 	}
 
-    // Naparsování URL adresy a vytvoření příslušného controlleru
     public function process($params) {
 		$parsedURL = $this->parseURL($params[0]);
 
         // len na LOCALHOSTE --> odstranujeme meno projektu !!!!!!!!
         array_shift($parsedURL);
-        
-		// kontroler je 1. parametr URL
-		$controllerClass = $this->dashesToCamelCase(array_shift($parsedURL)) . 'Controller';
-		
-		echo($controllerClass);
-		echo('<br />');
-		print_r($parsedURL);
+
+        // TODO - na produkcii odstranit bets/
+		if (empty($parsedURL)) {
+            $this->redirectTo('bets/intro');
+        }
+        // kontroler je 1. parametr URL
+        $controllerClass = $this->dashesToCamelCase(array_shift($parsedURL)) . 'Controller';
+
+        // TODO - na produkcii odstranit bets/
+        if (file_exists("controllers/" . $controllerClass . ".php")) {
+            $this->controller = new $controllerClass;
+        }
+        else {
+            $this->redirectTo('bets/error');
+        }
+
+        $this->controller->process($parsedURL);
+
+        $this->data['pageTitle'] = $this->controller->pageHeader['pageTitle'];
+        $this->data['keyWords'] = $this->controller->pageHeader['keyWords'];
+        $this->data['description'] = $this->controller->pageHeader['description'];
+
+        $this->view = 'layout';
     }
 
 }
