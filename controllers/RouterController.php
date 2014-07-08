@@ -47,7 +47,7 @@ class RouterController extends Controller {
         $this->data['keyWords'] = $this->controller->pageHeader['keyWords'];
         $this->data['description'] = $this->controller->pageHeader['description'];
 
-        $this->view = 'layout';
+        $this->view = 'layout'; //test koment
     }
 
 }
