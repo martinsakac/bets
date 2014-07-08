@@ -10,25 +10,39 @@
 </head>
 
 <body>
-    <header>
-        <h1>Welcome to BETS portal.</h1>
-    </header>
+    <fieldset>
+        <legend>Hlavicka</legend>
+        <header>
+            <h1>Bets portal.</h1>
+        </header>
+        <nav>
+            <ul>
+                <li><a href="/bets">nav1</a></li>
+                <li><a href="/bets">nav2</a></li>
+                <li><a href="/bets">nav3</a></li>
+            </ul>
+        </nav>
 
-    <nav>
-        <ul>
-            <li><a href="">nav1</a></li>
-            <li><a href="">nav2</a></li>
-            <li><a href="">nav3</a></li>
-        </ul>
-    </nav>
+        <input type="email" name="loginEmail" placeholder="Email">
+        <input type="password" name="loginPassword" placeholder="Password">
+        <button id="loginButton">Log in</button>
+    </fieldset>
+
     <br clear="both" />
 
-    <h2>Obsah tela</h2>
-    <?= $this->controller->renderView(); ?>
+    <fieldset>
+        <legend>Obsah tela</legend>
+        <?= $this->controller->renderView(); ?>
+    </fieldset>
 
-    <footer>
-        <h2>This is footer!</h2>
-    </footer>
+    <br clear="both" />
+
+    <fieldset>
+        <legend>Paticka</legend>
+        <footer>
+            <h2>This is footer!</h2>
+        </footer>
+    </fieldset>
 
 </body>
 </html>

@@ -21,17 +21,21 @@ class RouterController extends Controller {
 	}
 
     public function process($params) {
+
 		$parsedURL = $this->parseURL($params[0]);
 
         // len na LOCALHOSTE --> odstranujeme meno projektu !!!!!!!!
         array_shift($parsedURL);
 
+        // kontroler je 1. parametr URL
         // TODO - na produkcii odstranit bets/
 		if (empty($parsedURL)) {
-            $this->redirectTo('bets/intro');
+//            $this->redirectTo('bets/intro');
+            $controllerClass = 'IntroController';
         }
-        // kontroler je 1. parametr URL
-        $controllerClass = $this->dashesToCamelCase(array_shift($parsedURL)) . 'Controller';
+        else {
+            $controllerClass = $this->dashesToCamelCase(array_shift($parsedURL)) . 'Controller';
+        }
 
         // TODO - na produkcii odstranit bets/
         if (file_exists("controllers/" . $controllerClass . ".php")) {
